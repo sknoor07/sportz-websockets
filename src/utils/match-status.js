@@ -27,10 +27,10 @@ export function getMatchStatus(startTime, endTime, now = new Date()) {
 }
 
 /**
- * Syncs the match status if it has changed.
- * @param {Object} match - The match object containing status, startTime, and endTime.
- * @param {Function} updateStatus - Async function to update the status in the database.
- * @returns {Promise<string>} - The current or updated status.
+ * Update a match's status when its computed status differs and return the current status.
+ * @param {Object} match - Match object with `status`, `startTime`, and `endTime`.
+ * @param {Function} updateStatus - Async function called with the new status to persist the change.
+ * @returns {string} The match's current status.
  */
 export async function syncMatchStatus(match, updateStatus) {
     const nextStatus = getMatchStatus(match.startTime, match.endTime);
