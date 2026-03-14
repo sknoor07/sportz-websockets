@@ -13,7 +13,11 @@ matchRouter.get('/',async (req,res)=>{
     const parsed=listMatchesQuerySchema.safeParse(req.query);
     const Max_LIMIT=100;
     if(!parsed.success){
+<<<<<<< HEAD
         return res.status(400).json({error:"Invalid Payload",details: JSON.stringify(parsed.error.issues)});
+=======
+        return res.status(400).json({error:"Invalid Payload",details: JSON.stringify(parsed.error)});
+>>>>>>> 5c943d7204db84a3827ca7293fc50b488774f76d
     }
     const limit=Math.min(parsed.data.limit??50,Max_LIMIT);
     try{ 
@@ -27,7 +31,11 @@ matchRouter.get('/',async (req,res)=>{
 matchRouter.post('/',async (req,res)=>{
     const parsed=createMatchSchema.safeParse(req.body);
     if(!parsed.success){
+<<<<<<< HEAD
         return res.status(400).json({error:"Invaid Payload",details: JSON.stringify(parsed.error.issues)});
+=======
+        return res.status(400).json({error:"Invaid Payload",details: JSON.stringify(parsed.error)});
+>>>>>>> 5c943d7204db84a3827ca7293fc50b488774f76d
     }
     const {data:{startTime, endTime,homeScore,awayScore}}=parsed;
     try{

@@ -1,0 +1,100 @@
+﻿--- Testing listMatchesQuerySchema ---
+Valid: { success: true, data: { limit: 10 } }
+Invalid (max): {
+  success: false,
+  error: ZodError: [
+    {
+      "origin": "number",
+      "code": "too_big",
+      "maximum": 100,
+      "inclusive": true,
+      "path": [
+        "limit"
+      ],
+      "message": "Too big: expected number to be <=100"
+    }
+  ]
+      at new ZodError (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/core.js:39:39)
+      at Module.<anonymous> (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/parse.js:40:20)
+      at inst.safeParse (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/classic/schemas.js:40:46)
+      at file:///C:/Users/noora/OneDrive/Desktop/sportz/test-validation.js:11:54
+      at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+}
+Invalid (non-pos): {
+  success: false,
+  error: ZodError: [
+    {
+      "origin": "number",
+      "code": "too_small",
+      "minimum": 0,
+      "inclusive": false,
+      "path": [
+        "limit"
+      ],
+      "message": "Too small: expected number to be >0"
+    }
+  ]
+      at new ZodError (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/core.js:39:39)
+      at Module.<anonymous> (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/parse.js:40:20)
+      at inst.safeParse (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/classic/schemas.js:40:46)
+      at file:///C:/Users/noora/OneDrive/Desktop/sportz/test-validation.js:12:58
+      at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+}
+--- Testing MATCH_STATUS ---
+{ SCHEDULED: 'scheduled', LIVE: 'live', FINISHED: 'finished' }
+--- Testing matchIdParamSchema ---
+Valid: { success: true, data: { id: 1 } }
+Invalid: {
+  success: false,
+  error: ZodError: [
+    {
+      "origin": "number",
+      "code": "too_small",
+      "minimum": 0,
+      "inclusive": false,
+      "path": [
+        "id"
+      ],
+      "message": "Too small: expected number to be >0"
+    }
+  ]
+      at new ZodError (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/core.js:39:39)
+      at Module.<anonymous> (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/parse.js:40:20)
+      at inst.safeParse (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/classic/schemas.js:40:46)
+      at file:///C:/Users/noora/OneDrive/Desktop/sportz/test-validation.js:19:44
+      at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+}
+--- Testing createMatchSchema ---
+Valid: true
+Invalid (time order): endTime must be chronologically after startTime
+Invalid (ISO): startTime must be a valid ISO date string
+--- Testing updateScoreSchema ---
+Valid: { success: true, data: { homeScore: 1, awayScore: 2 } }
+Invalid: {
+  success: false,
+  error: ZodError: [
+    {
+      "origin": "number",
+      "code": "too_small",
+      "minimum": 0,
+      "inclusive": true,
+      "path": [
+        "homeScore"
+      ],
+      "message": "Too small: expected number to be >=0"
+    }
+  ]
+      at new ZodError (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/core.js:39:39)
+      at Module.<anonymous> (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/core/parse.js:40:20)
+      at inst.safeParse (file:///C:/Users/noora/OneDrive/Desktop/sportz/node_modules/zod/v4/classic/schemas.js:40:46)
+      at file:///C:/Users/noora/OneDrive/Desktop/sportz/test-validation.js:48:43
+      at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+}
