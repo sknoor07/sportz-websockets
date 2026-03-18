@@ -40,18 +40,17 @@ export default function securityMiddleware(){
             const decision = await httpArcjet.protect(req);
             if(decision.isDenied()){
                 if(decision.reason.isRateLimit()){
-                    return res.status(429).json({error:"Too Many Requests",details:JSON.stringify(decision.reason)});
+                    return res.status(429).json({error:"Too Many Requests"});
                 }
                 if(decision.reason.isBot()){
-                    return res.status(403).json({error:"Bot Detected",details:JSON.stringify(decision.reason)});
+                    return res.status(403).json({error:"Bot Detected"});
                 }
-                return res.status(403).json({error:"Access Denied",details:JSON.stringify(decision.reason)});
+                return res.status(403).json({error:"Access Denied"});
             }
-            next();
+            return next();
         }catch(e){
             console.error("Arcjet Middleware error:",e);
-            return res.status(503).json({error:"Service Unavailable",details:JSON.stringify(e)});
+            return res.status(503).json({error:"Service Unavailable"});
         }
-        next();
     }
 }
