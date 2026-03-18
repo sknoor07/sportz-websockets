@@ -27,7 +27,7 @@ matchRouter.get('/',async (req,res)=>{
 matchRouter.post('/',async (req,res)=>{
     const parsed=createMatchSchema.safeParse(req.body);
     if(!parsed.success){
-        return res.status(400).json({error:"Invaid Payload",details: JSON.stringify(parsed.error.issues)});
+        return res.status(400).json({error:"Invalid Payload",details: JSON.stringify(parsed.error.issues)});
     }
     const {data:{startTime, endTime,homeScore,awayScore}}=parsed;
     try{
