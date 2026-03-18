@@ -1,5 +1,7 @@
 import { setInterval } from "timers/promises";
 import { WebSocket, WebSocketServer } from "ws";
+import { wsArcjet } from "../arcjet.js";
+
 
 function sendJson(socket, payload){
     if(socket.readyState!== WebSocket.OPEN) return;
@@ -22,9 +24,37 @@ function broadcast(wss,payload){
 }
 
 export function attachWebSocketToServer(server){
-    const wss= new WebSocketServer({server,path:"/ws",maxPayload:1024*1024});
+    const wss= new WebSocketServer({ noServer: true, maxPayload:1024*1024 });
 
-    wss.on('connection',(socket)=>{
+    server.on('upgrade', async (req, socket, head) => {
+        if (req.url !== '/ws') {
+            return;
+        }
+
+        if (wsArcjet) {
+            try {
+                const decision = await wsArcjet.protect(req);
+                if (decision.isDenied()) {
+                    const status = decision.reason.isRateLimit() ? 429 : 403;
+                    const reason = decision.reason.isRateLimit() ? "Too Many Requests" : decision.reason.isBot() ? "Bot Detected" : "Access Denied";
+                    socket.write(`HTTP/1.1 ${status} ${reason}\r\nConnection: close\r\n\r\n`);
+                    socket.destroy();
+                    return;
+                }
+            } catch (e) {
+                console.error("Arcjet WebSocket error:", e);
+                socket.write('HTTP/1.1 500 Internal Server Error\r\nConnection: close\r\n\r\n');
+                socket.destroy();
+                return;
+            }
+        }
+
+        wss.handleUpgrade(req, socket, head, (ws) => {
+            wss.emit('connection', ws, req);
+        });
+    });
+
+    wss.on('connection', (socket, req) => {
         socket.isAlive=true;
         socket.on('pong',()=>socket.isAlive=true);
         sendJson(socket,{type:'welcome',message:'Connected to Sportz Live Feed'});
